@@ -10,5 +10,5 @@ def hello_world():
     x = 2
     y = 4
     z = x + y
-    return z + ' what the heck!'
+    return ' %d what the heck!' % z
 
