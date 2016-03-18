@@ -7,5 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'what the heck!'
+    x = 2
+    y = 4
+    z = x + y
+    return z + ' what the heck!'
 
