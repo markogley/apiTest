@@ -1,7 +1,7 @@
 
 # A very simple Flask Hello World app for you to get started with...
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 
 app = Flask(__name__)
 
@@ -20,9 +20,12 @@ tasks = [
     }
 ]
 
-@app.route('/test/api/v1.0/tests', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks':tasks})
+@app.route('/test/api/v1.0/tests/<int:task_id>', methods=['GET'])
+def get_tasks(task_id):
+    task = [task for task in tasks if task['id'] == task_id]
+    if len(task) == 0:
+        abort(404)
+    return jsonify({'tasks':task[0]})
 
 
 #def hello_world():
