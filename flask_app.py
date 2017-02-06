@@ -2,7 +2,9 @@
 # A very simple Flask Hello World app for you to get started with...
 
 from flask import Flask, jsonify, abort, make_response, request, url_for
+from flask.ext.httpauth import HTTPBasicAuth
 
+auth = HTTPBasicAuth()
 app = Flask(__name__)
 
 tasks = [
@@ -29,6 +31,7 @@ def get_task(task_id):
 
 
 @app.route('/test/api/v1.0/tests', methods=['GET'])
+@auth.login_required
 def get_tasks():
     return jsonify({'tasks': [make_public_task(task) for task in tasks]})
 
@@ -85,6 +88,14 @@ def make_public_task(task):
     return new_task
 
 
-#def hello_world():
-#    return 'Hello from Flask!'
+@auth.get_password
+def get_password(username):
+    if username == 'mogley':
+        return 'python'
+    return None
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'error': 'Unauthorized access'}), 401)
+
 
